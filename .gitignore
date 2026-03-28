@@ -1,0 +1,22 @@
+# LaTeX中間ファイル
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.bbl
+*.blg
+*.dvi
+
+# PDF（生成物）
+*.pdf
+
+# OS
+.DS_Store
+Thumbs.db
+
+# エディタ
+*.swp
+*~
