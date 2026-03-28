@@ -1,0 +1,211 @@
+%\usepackage[dvipdfmx]{graphicx}
+\usepackage{graphicx}
+%\usepackage{subcaption}
+%\usepackage{caption,url}
+\usepackage{ulem}
+\usepackage{pgfplots,pgfplotstable}
+\pgfplotsset{compat=newest}
+\usepackage{pgfplotstable}
+\usepackage{pifont}
+\usepackage{wrapfig} 
+\usepgfplotslibrary{polar}
+%\usepackage{subcaption,cases}
+%\usepackage{showkeys}
+\usepackage{bm}
+\usepackage{amsthm,amssymb}
+%\usepackage{amstext}
+\usepackage{ascmac}
+%\usepackage{amscd}
+\usepackage[all]{xy}
+\usepackage[dvipdfmx]{hyperref}
+%\usepackage{wrapfig}
+%\usepackage{amsmath}
+%\usepackage{subfig}
+\usepackage{bm}
+\usepackage{color}
+\usepackage {empheq}
+\usepackage{tcolorbox}
+\usepackage{pb-diagram}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+
+
+\tcbuselibrary{skins, breakable, theorems}
+\usepackage{cleveref} %参照用
+\crefname{equation}{式}{式}% {環境名}{単数形}{複数形} \crefで引くときの表示
+\crefname{figure}{図}{図}% {環境名}{単数形}{複数形} \crefで引くときの表示
+\crefname{table}{表}{表}% {環境名}{単数形}{複数形} \crefで引くときの表示
+\crefname{section}{\S}{\S}% {環境名}{単数形}{複数形} \crefで引くときの表示
+\newcommand{\kara}{} %無を出力するコマンド
+\newtcolorbox[auto counter, number within=section, crefname = {定義}{定義}]{defi}[3][]
+{colback=black!3!white, colbacktitle=black!60!white,
+colframe=black!3!white,
+enhanced, 
+breakable = true, fonttitle = \bfseries,
+title = 定義~\thetcbcounter~\if #2\kara \else（#2） \fi,
+#1,
+label = thm:#3}
+\newtcolorbox[auto counter, use counter from=defi, crefname = {定理}{定理}]{thm}[3][]
+{colback=blue!3!white,colbacktitle=blue!70!white,colframe=blue!3!white,enhanced, breakable = true, fonttitle = \bfseries,
+title = 定理~\thetcbcounter~\if #2\kara \else（#2） \fi,
+#1,
+label = thm:#3}
+\newtcolorbox[auto counter, use counter from=defi, crefname = {命題}{命題}]{prop}[3][]
+{colback=blue!3!white,colbacktitle=blue!70!white,colframe=blue!3!white,enhanced, breakable = true, fonttitle = \bfseries,
+title = 命題~\thetcbcounter~\if #2\kara \else（#2） \fi,
+#1,
+label = thm:#3}
+\newtcolorbox[auto counter, use counter from=defi, crefname = {補題}{補題}]{lem}[3][]
+{colback=blue!3!white,colbacktitle=blue!70!white,colframe=blue!3!white,enhanced, breakable = true, fonttitle = \bfseries,
+title = 補題~\thetcbcounter~\if #2\kara \else（#2） \fi,
+#1,
+label = thm:#3}
+\newtcolorbox[auto counter, use counter from=defi, crefname = {系}{系}]{coro}[3][]
+{colback=blue!3!white,colbacktitle=blue!70!white,colframe=blue!3!white,enhanced, breakable = true, fonttitle = \bfseries,
+title = 系~\thetcbcounter~\if #2\kara \else（#2） \fi,
+#1,
+label = thm:#3}
+\newtcolorbox[auto counter, use counter from=defi, crefname = {注意}{注意}]{rmk}[3][]
+{colback=green!5!blue!5!white,
+colbacktitle=red!30!blue,%!10!blue,
+colframe=green!5!blue!5!white,
+enhanced, breakable = true, fonttitle = \bfseries,
+title = 注意~\thetcbcounter~\if #2\kara \else（#2） \fi,
+#1,
+label = thm:#3}
+
+\newtcolorbox[auto counter, use counter from=defi, crefname = {演習問題}{演習問題}]{kform}[3][]
+{colback=green!5!white,colbacktitle=green!55!blue,colframe=white,enhanced, breakable = true, fonttitle = \bfseries,
+title = 演習問題（かたちの数理）~\thetcbcounter~\if #2\kara \else（#2） \fi,
+#1,
+label = thm:#3}
+
+\newtcolorbox[auto counter, use counter from=defi, crefname = {演習問題}{演習問題}]{pform}[3][]
+{colback=green!5!white,colbacktitle=green!55!blue,colframe=white,enhanced, breakable = true, fonttitle = \bfseries,
+title = 演習問題（確率と統計）~\thetcbcounter~\if #2\kara \else（#2） \fi,
+#1,
+label = thm:#3}
+
+
+\newtcolorbox[auto counter, use counter from=defi, crefname = {公理}{公理}]{axiom}[3][]
+{colback=black!3!white,colbacktitle=black!60!white, colframe=black!3!white,enhanced, breakable = true, fonttitle = \bfseries,
+title = 公理~\thetcbcounter~\if #2\kara \else（#2） \fi,
+#1,
+label = thm:#3}
+
+\newtcolorbox[auto counter, use counter from=defi, crefname = {レポート問題}{レポート問題}]{kex}[3][]
+{colback=red!3!white,colbacktitle=red!60!white, colframe=white,enhanced, 
+%breakable = true, 
+fonttitle = \bfseries,
+title = レポート問題（かたちの数理）~\thetcbcounter~\if #2\kara \else（#2） \fi,
+#1,
+label = thm:#3}
+
+\newtcolorbox[auto counter, use counter from=defi, crefname = {レポート問題}{レポート問題}]{pex}[3][]
+{colback=red!3!white,colbacktitle=red!60!blue, colframe=white,enhanced, 
+%breakable = true, 
+fonttitle = \bfseries,
+title = レポート問題（確率と統計）~\thetcbcounter~\if #2\kara \else（#2） \fi,
+#1,
+label = thm:#3}
+
+%\newtcolorbox[auto counter, use counter from=defi, crefname = {レポート問題}{レポート問題}]{bex}[3][]
+%{colback=red!3!white,colbacktitle=red!60!white, colframe=white,enhanced, breakable = true, fonttitle = \bfseries,
+%title = レポート問題（大学数学入門，かたちの数理共通）~\thetcbcounter~\if #2\kara \else（#2） \fi,
+%#1,
+%label = thm:#3}
+
+\newtcolorbox[auto counter, use counter from=defi, crefname = {例}{例}]{ex}[3][]
+{
+colback=green!5!blue!5!white,
+colbacktitle=green!40!blue,
+colframe=green!5!blue!5!white,
+enhanced, 
+breakable = true, fonttitle = \bfseries,
+title = 例~\thetcbcounter~\if #2\kara \else（#2） \fi,
+#1,
+label = thm:#3}
+
+
+
+
+%\newtcolorbox{mybox}{breakable, colbacktitle=black!60!white, colframe=white}
+\newtcolorbox{mybox}[2][]{breakable, colbacktitle=blue!57!green!30!red,
+colback=yellow!3!white,
+title={#2},fonttitle=\bfseries\gtfamily,#1}
+%\begin{mybox}
+%box contents
+%\end{mybox}
+%\begin{mybox}[title=My box, colbacktitle=orange]
+%box contents
+%\end{mybox}
+
+\makeatletter
+\renewcommand{\theequation}{%
+\thesection.\arabic{equation}}
+\@addtoreset{equation}{section}
+  
+ \renewcommand{\thefigure}{% 図番号の付け方
+\thesection.\arabic{figure}}
+\@addtoreset{figure}{section}
+
+\renewcommand{\thetable}{% 表番号の付け方
+\thesection.\arabic{table}}
+\@addtoreset{table}{section}
+	
+\makeatother
+
+%\newcommand{\modif}{$\clubsuit$}
+%\newtheorem{thm}{定理}[section]
+%\newtheorem{coro}[thm]{系}
+%\newtheorem{prop}[thm]{命題}
+%\newtheorem{lem}[thm]{補題}
+\theoremstyle{definition}
+\newtheorem{defin}{定義}[section]
+%\newtheorem{axiom}[thm]{公理}
+%\newtheorem{story}[thm]{おはなし}
+%\newtheorem{ex}{例}[section]
+\newtheorem{enshu}{演習問題}[section]
+%\newtheorem{enshu2}[enshu]{演習問題（発展）}
+%\newtheorem{enshu3}[enshu]{演習問題（Google Form）}
+%
+%\newtheorem{rmk}[thm]{注意}
+%\newtheorem{cond}[thm]{条件}
+%\newtheorem{question}[thm]{問}
+%\newtheorem{notation}[thm]{記号}
+\newtheorem{example}{例}[section]
+\newtheorem{remark}{注意}[section]
+
+\newcommand{\G}{G}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\ii}{\sqrt{-1}}
+\newcommand{\en}{\mathbb{S}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\id}{\mathrm{id}}
+
+\newcommand{\Sin}{\mathrm{Sin}}
+\newcommand{\Cos}{\mathrm{Cos}}
+\newcommand{\Tan}{\mathrm{Tan}}
+\newcommand{\out}{\mathrm{Out}(F_{N})}
+\newcommand{\pmf}{\mathcal{PMF}(S)}
+\newcommand{\PSL}{\mathrm{PSL}}
+\newcommand{\mf}{\mathcal{MF}(S)}
+\newcommand{\ext}{\mathrm{Ext}}
+\newcommand{\dt}{d_{\mathcal{T}}}
+\newcommand{\Lip}{\mathrm{Lip}^{1}_{b}}
+\newcommand{\hb}{\partial_{h}}
+\newcommand{\Gb}{\partial_{g}}
+\newcommand{\PRs}{P\mathbb{R}_{\geq 0}^{\mathcal{S}}}
+
+ \renewcommand\proofname{\bf 証明}
+ \renewcommand{\labelenumi}{(\roman{enumi})}
+
+\topmargin=-1.8cm
+\textheight=21.5cm
+\textwidth=15cm
+\oddsidemargin=-0.7cm
+\evensidemargin=0cm
