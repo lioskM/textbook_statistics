@@ -35,8 +35,8 @@ $DOCS_DIR = Resolve-Path (Join-Path $PARENT_DIR "docs")
 $CHAPTERS_DIR = Resolve-Path (Join-Path $PARENT_DIR "chapters")
 $REVIEW_DIR = Resolve-Path $SCRIPT_DIR
 
-$READ_ALL = "`n---`nBefore starting, use the Read tool to read ALL files in the docs/ and review/ directories."
-$READ_DOCS = "`n---`nBefore starting, use the Read tool to read ALL files in the docs/ directory."
+$READ_ALL = "`n---`nDo NOT ask for permission. You already have access. Use the Read tool immediately to read ALL files in the docs/ and review/ directories, then proceed."
+$READ_DOCS = "`n---`nDo NOT ask for permission. You already have access. Use the Read tool immediately to read ALL files in the docs/ directory, then proceed."
 
 Write-Host "=== Review started: $INPUT ==="
 Write-Host "Output: $OUTPUT"
