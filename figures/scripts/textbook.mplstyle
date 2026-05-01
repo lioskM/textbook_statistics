@@ -1,0 +1,65 @@
+# Textbook style for matplotlib
+# Target: journal-quality, low chroma, sober
+
+# Font (環境に応じて利用可能なものが選択される)
+font.family       : sans-serif
+font.sans-serif   : Noto Sans CJK JP, Yu Gothic UI, Yu Gothic, Meiryo, Hiragino Sans, DejaVu Sans
+font.size         : 9
+axes.titlesize    : 10
+axes.labelsize    : 9
+xtick.labelsize   : 8
+ytick.labelsize   : 8
+legend.fontsize   : 8
+figure.titlesize  : 10
+
+# Math
+mathtext.fontset  : cm
+
+# Figure
+figure.figsize    : 5.12, 3.15
+figure.dpi        : 150
+savefig.dpi       : 300
+savefig.bbox      : tight
+savefig.pad_inches: 0.02
+
+# Axes
+axes.spines.top   : False
+axes.spines.right : False
+axes.linewidth    : 0.8
+axes.edgecolor    : 333333
+axes.labelcolor   : 222222
+axes.titlepad     : 8
+axes.labelpad     : 4
+
+# Ticks
+xtick.color       : 333333
+ytick.color       : 333333
+xtick.direction   : out
+ytick.direction   : out
+xtick.major.size  : 3
+ytick.major.size  : 3
+xtick.major.width : 0.7
+ytick.major.width : 0.7
+xtick.minor.size  : 1.5
+ytick.minor.size  : 1.5
+
+# Grid
+axes.grid         : True
+axes.grid.axis    : y
+grid.color        : DDDDDD
+grid.linewidth    : 0.5
+grid.linestyle    : -
+axes.axisbelow    : True
+
+# Lines
+lines.linewidth   : 1.2
+lines.markersize  : 4
+
+# Legend
+legend.frameon    : False
+legend.borderpad  : 0.4
+legend.handlelength: 1.2
+legend.handletextpad: 0.5
+
+# Colors: Okabe-Ito palette (color-blind friendly)
+axes.prop_cycle   : cycler('color', ['0072B2', 'D55E00', '009E73', 'CC79A7', 'F0E442', '56B4E9', 'E69F00', '000000'])

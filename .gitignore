@@ -10,8 +10,18 @@
 *.blg
 *.dvi
 
-# PDF（生成物）
+# PDF（LaTeX生成物）。教科書本文のPDFのみ除外し、図は追跡する
 *.pdf
+!figures/output/*.pdf
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
 
 # OS
 .DS_Store
@@ -25,3 +35,6 @@ Thumbs.db
 .claude/
 
 references/
+
+# 図の確認用PNG (LaTeX組版にはPDFのみ使用)
+figures/output/*.png
