@@ -43,7 +43,7 @@
 | 6 | statistical_test.tex | 検定 — 仮説とp値をどう読むか |
 | 7 | correlations.tex | 相関 — 関係の強さを測る |
 | 8 | regression.tex | 回帰 — 単回帰から最小限の診断まで |
-| 9 | statistical_tricks.tex | 統計の限界・バイアス・倫理 |
+| 9 | limitations_and_ethics.tex | 統計の限界・バイアス・倫理 |
 
 ## 各章で導入済みの概念（累積）
 
