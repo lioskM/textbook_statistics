@@ -38,3 +38,7 @@ references/
 
 # 図の確認用PNG (LaTeX組版にはPDFのみ使用)
 figures/output/*.png
+
+# レビュー文書 (ローカル作業用、リポジトリには含めない)
+review/
+reviews/
