@@ -22,7 +22,7 @@ textbook_statistics/
 │   ├── regression.tex                 # 8章
 │   └── limitations_and_ethics.tex     # 9章（執筆予定）
 ├── docs/                              # 設計文書
-│   ├── 要件定義書.txt
+│   ├── 要件定義書.md
 │   ├── 統計学教科書_章構成案.md
 │   └── リズム原則.md
 ├── references/                        # 参考資料（エージェントは参照しない）
@@ -104,13 +104,13 @@ textbook_statistics/
 
 | エージェント | 必須参照 | 任意参照 |
 |---|---|---|
-| ① 教育設計 | docs/要件定義書.txt §5.2, §6 / docs/統計学教科書_章構成案.md | 前章のLaTeX |
-| ② 本文生成 | docs/要件定義書.txt（全体） / docs/統計学教科書_章構成案.md / review/latex_reference.md | — |
+| ① 教育設計 | docs/要件定義書.md §5.2, §6 / docs/統計学教科書_章構成案.md | 前章のLaTeX |
+| ② 本文生成 | docs/要件定義書.md（全体） / docs/統計学教科書_章構成案.md / review/latex_reference.md | — |
 | ③ Role A | （特になし） | docs/統計学教科書_章構成案.md |
-| ③ Role B | docs/リズム原則.md / docs/要件定義書.txt §3, §4.4, §4.5, §5.2 | — |
-| ④ 統計的正確性 | docs/要件定義書.txt §4.4, §4.8, §6 / review/latex_reference.md | 対象章のLaTeX |
-| ⑤ 構造・整合性 | docs/要件定義書.txt §5.2, §6, §4.9 / docs/統計学教科書_章構成案.md / review/latex_reference.md | 前章までのLaTeX |
-| ⑥ 文章品質 | docs/要件定義書.txt §3, §4.4, §4.5, §4.6 | — |
+| ③ Role B | docs/リズム原則.md / docs/要件定義書.md §3, §4.4, §4.5, §5.2 | — |
+| ④ 統計的正確性 | docs/要件定義書.md §4.4, §4.8, §6 / review/latex_reference.md | 対象章のLaTeX |
+| ⑤ 構造・整合性 | docs/要件定義書.md §5.2, §6, §4.9 / docs/統計学教科書_章構成案.md / review/latex_reference.md | 前章までのLaTeX |
+| ⑥ 文章品質 | docs/要件定義書.md §3, §4.4, §4.5, §4.6 | — |
 
 ## 実行方法
 

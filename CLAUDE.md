@@ -6,7 +6,7 @@
 ## 必読 (タスク種別による)
 
 - 構造把握: `README.md`
-- 校正・執筆: `review/agents/` の該当ファイル + `docs/リズム原則.md` + `docs/要件定義書.txt`
+- 校正・執筆: `review/agents/` の該当ファイル + `docs/リズム原則.md` + `docs/要件定義書.md`
 - LaTeX 環境名・コマンド: `review/latex_reference.md`
 
 ## コマンド
