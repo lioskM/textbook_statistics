@@ -5,9 +5,22 @@
 % \usepackage[OTF]{fontenc}
 \usepackage{geometry}
 \geometry{a4paper, margin=1in}
-% \usepackage{titlesec}
+\usepackage[explicit]{titlesec}
+\usepackage{needspace}
+\usepackage{etoolbox}
 \usepackage{tocbibind}
 \usepackage{tcolorbox}
+
+\definecolor{stepheadingbackground}{RGB}{232,240,245}
+\titleformat{\subsection}[block]
+  {\normalfont\large\bfseries}
+  {}
+  {0pt}
+  {\colorbox{stepheadingbackground}{%
+    \parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+      \raggedright\strut\thesubsection\quad #1\strut}}}
+\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\pretocmd{\subsection}{\Needspace{6\baselineskip}}{}{}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
