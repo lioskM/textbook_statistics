@@ -17,11 +17,11 @@ textbook_statistics/
 │   ├── data_visualization.tex         # 3章
 │   ├── probability_distribution.tex   # 4章
 │   ├── inference.tex                  # 5章
-│   ├── statistical_test.tex           # 6章 Part A
-│   ├── statistical_test_precise.tex   # 6章 Part B
-│   ├── correlations.tex               # 7章
-│   ├── regression.tex                 # 8章
-│   └── limitations_and_ethics.tex     # 9章（執筆予定）
+│   ├── statistical_test.tex           # 6章
+│   ├── statistical_test_precise.tex   # 7章
+│   ├── correlations.tex               # 8章
+│   ├── regression.tex                 # 9章
+│   └── limitations_and_ethics.tex     # 10章
 ├── docs/                              # 設計・実務文書
 │   ├── 要件定義書.md
 │   ├── リズム原則.md
@@ -58,14 +58,13 @@ textbook_statistics/
 ## 章タイプ別の扱い
 
 ### 6ステップ適用章
-2〜5章, 6章Part A, 7章, 8章は、標準的な6ステップ構成（問い→素朴な方法と限界→理論の最小核→手法→実践→結果と次の一手）に沿って執筆する。
+2〜6章, 8〜10章は、標準的な6ステップ構成（問い→素朴な方法と限界→理論の最小核→手法→実践→結果と次の一手）に沿って執筆する。
 
 ### 6ステップ例外章
 以下の章は6ステップ不適用。要件定義書§4.10・§6 で例外として規定されている。
 
 - **1章（overview）**：本書全体の見取り図。要件§4.4〜§4.6の記述ルールも外す。
-- **6章Part B（Part Aの数学的補遺）**：t統計量・自由度・Welch検定・カイ二乗検定の数学的根拠と数値計算。
-- **9章（手法の外側を知る）**：本書全体の総括。バイアスと誤用を既習章の手法と対応づける。
+- **7章（検定の数理編）**：t統計量・自由度・Welch検定・カイ二乗検定の数学的根拠と数値計算。
 
 ## ビルド
 
