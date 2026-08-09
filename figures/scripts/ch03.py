@@ -38,6 +38,22 @@ budget_oku = df['budget'] / 1e8
 
 
 # ============================================================
+# 図3.0: 素朴な方法 (一本ずつの棒 vs 区間集計)
+# ============================================================
+fig, axes = plt.subplots(1, 2, figsize=(7.2, 2.6))
+axes[0].bar(range(1, len(views_man) + 1), views_man, color='#4C7CA8', width=0.8)
+axes[0].set_title('一本ずつ棒にして並べる')
+axes[0].set_xlabel('作品（並び順に意味はない）')
+axes[0].set_ylabel('視聴回数 (万回)')
+axes[1].hist(views_man, bins=12, color='#4C7CA8', edgecolor='white', linewidth=0.5)
+axes[1].set_title('近い値どうしを区間にまとめる')
+axes[1].set_xlabel('視聴回数 (万回)')
+axes[1].set_ylabel('作品数')
+fig.tight_layout()
+save(fig, 'ch03_naive')
+
+
+# ============================================================
 # 図3.1: 視聴回数ヒストグラム (ビン幅3パターン)
 # ============================================================
 fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.6), sharey=False)
