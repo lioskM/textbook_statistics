@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '=== docs/リズム原則.md (hookによる自動注入。本文の修正案・差し替え文を起草する前に必ずこの原則を踏まえること) ==='; cat \"docs/リズム原則.md\"",
+            "statusMessage": "リズム原則を読み込み中",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '【hook】本文の修正案・差し替え文を起草する前に, リズム原則を必ず踏まえること. セッション冒頭に全文が注入済み. コンパクト等で文脈から失われている場合は docs/リズム原則.md を全文Readしてから起草する.'",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

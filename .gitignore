@@ -31,8 +31,9 @@ Thumbs.db
 *.swp
 *~
 
-# Claude Code (個人ローカル設定)
-.claude/
+# Claude Code (個人ローカル設定のみ除外. 共有設定 settings.json は追跡する)
+.claude/*
+!.claude/settings.json
 
 references/
 
