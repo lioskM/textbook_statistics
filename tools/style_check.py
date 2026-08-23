@@ -86,11 +86,24 @@ def scan_files(paths):
 
 
 def scan_staged():
-    """ステージ済み diff の追加行のみ走査する."""
+    """ステージ済み diff の追加行のみ走査する.
+
+    持ち越し判定: 追加行に出た block 語が, 同じファイルの削除行にも含まれるなら,
+    既存参照の持ち越し (行の書き換えに伴う再検出) とみなして flag に降格する.
+    新規の持ち込みは従来どおり block (リズム原則§4 機械検査層の注意の恒久対応).
+    """
     out = subprocess.run(
         ["git", "diff", "--cached", "-U0", "--", "chapters/*.tex"],
         capture_output=True, text=True, encoding="utf-8", cwd=ROOT,
     ).stdout
+    removed = {}
+    path = None
+    for raw in out.splitlines():
+        if raw.startswith("+++ b/"):
+            path = raw[6:]
+            removed.setdefault(path, [])
+        elif raw.startswith("-") and not raw.startswith("---") and path is not None:
+            removed[path].append(raw[1:])
     hits = []
     path, lineno = None, 0
     for raw in out.splitlines():
@@ -101,6 +114,8 @@ def scan_staged():
             lineno = int(m.group(1)) if m else 0
         elif raw.startswith("+") and not raw.startswith("+++"):
             for rid, sev, desc, frag in scan_line(raw[1:]):
+                if sev == "block" and any(frag in old for old in removed.get(path, [])):
+                    sev, desc = "flag", desc + " (削除行にも同語あり: 既存の持ち越し)"
                 hits.append((path, lineno, rid, sev, desc, frag))
             lineno += 1
         elif not raw.startswith("-"):
