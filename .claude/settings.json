@@ -1,5 +1,40 @@
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \".claude/hooks/rhythm_guard.py\" guard",
+            "timeout": 15,
+            "statusMessage": "リズム原則の全文Read済みかを確認中"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \".claude/hooks/rhythm_guard.py\" guard_bash",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \".claude/hooks/rhythm_guard.py\" mark",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
     "SessionStart": [
       {
         "hooks": [

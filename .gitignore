@@ -34,6 +34,8 @@ Thumbs.db
 # Claude Code (個人ローカル設定のみ除外. 共有設定 settings.json は追跡する)
 .claude/*
 !.claude/settings.json
+!.claude/hooks/
+!.claude/hooks/**
 
 references/
 
@@ -43,3 +45,5 @@ figures/output/*.png
 # レビュー文書 (ローカル作業用、リポジトリには含めない)
 review/
 reviews/
+# Claude Code hook の状態ファイル
+.claude/state/
