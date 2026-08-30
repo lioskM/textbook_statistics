@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \".claude/hooks/rhythm_guard.py\" guard",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/rhythm_guard.py\" guard",
             "timeout": 15,
             "statusMessage": "リズム原則の全文Read済みかを確認中"
           }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \".claude/hooks/rhythm_guard.py\" guard_bash",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/rhythm_guard.py\" guard_bash",
             "timeout": 15
           }
         ]
@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \".claude/hooks/rhythm_guard.py\" mark",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/rhythm_guard.py\" mark",
             "timeout": 15
           }
         ]
@@ -40,7 +40,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '=== docs/リズム原則.md (hookによる自動注入。本文の修正案・差し替え文を起草する前に必ずこの原則を踏まえること) ==='; cat \"docs/リズム原則.md\"",
+            "command": "echo '=== docs/リズム原則.md (hookによる自動注入。本文の修正案・差し替え文を起草する前に必ずこの原則を踏まえること) ==='; cat \"$CLAUDE_PROJECT_DIR/docs/リズム原則.md\"",
             "statusMessage": "リズム原則を読み込み中",
             "timeout": 15
           }
