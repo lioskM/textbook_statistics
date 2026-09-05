@@ -231,7 +231,7 @@ u_{xy} = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})
 分母は$n$ではなく$n-1$になっている.
 不偏分散のときと同じ理由で, 標本から母集団の共分散を偏りなく推定するには$n-1$で割る.
 
-\subsubsection*{ステップ5：各変数の標本標準偏差を求める.}
+\subsubsection*{ステップ5：各変数の標準偏差を求める.}
 \[
 u_x = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2}, \qquad u_y = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (y_i - \bar{y})^2}
 \]
@@ -360,7 +360,7 @@ $r \approx 0.76$という値は, 事実上この1つの点が決めている.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\linewidth]{../figures/output/ch08_simpson.pdf}
-  \caption{シンプソンのパラドックスを示す合成データ. 学部Aと学部Bは各30人で, 群内の相関はそれぞれ $r=0.700$, $r=0.600$. 2群をまとめると $r=-0.316$ になる. 点の形と線種でも群と回帰直線を区別した.}
+  \caption{シンプソンのパラドックスを示す合成データ. 学部Aと学部Bは各30人で, 群内の相関はそれぞれ $r=0.700$, $r=0.600$. 2群をまとめると $r=-0.316$ になる. 点の形と線種でも群と直線を区別した.}
   \label{fig:ch08-simpson}
 \end{figure}
 
