@@ -8,7 +8,7 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/rhythm_guard.py\" guard",
             "timeout": 15,
-            "statusMessage": "リズム原則の全文Read済みかを確認中"
+            "statusMessage": "リズム原則と周辺文書の全文Read済みかを確認中"
           }
         ]
       },
@@ -40,8 +40,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '=== docs/リズム原則.md (hookによる自動注入。本文の修正案・差し替え文を起草する前に必ずこの原則を踏まえること) ==='; cat \"$CLAUDE_PROJECT_DIR/docs/リズム原則.md\"",
-            "statusMessage": "リズム原則を読み込み中",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/rhythm_guard.py\" status",
+            "statusMessage": "必読文書の一覧と既読状況を確認中",
             "timeout": 15
           }
         ]
@@ -52,8 +52,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '【hook】本文の修正案・差し替え文を起草する前に, リズム原則を必ず踏まえること. セッション冒頭に全文が注入済み. コンパクト等で文脈から失われている場合は docs/リズム原則.md を全文Readしてから起草する.'",
-            "timeout": 10
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/rhythm_guard.py\" remind",
+            "timeout": 15
           }
         ]
       }

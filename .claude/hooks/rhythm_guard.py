@@ -1,33 +1,77 @@
-# リズム原則の全文Readを起草の前提条件として強制するhook。
-# mark  (PostToolUse/Read): docs/リズム原則.md の Read ごとに実際に読めた行区間を記録し,
-#        区間の和集合が全行をカバーした時点で「全文Read済み」マーカーを書く。
+# リズム原則と周辺文書の全文Readを, 起草の前提条件として強制するhook。
+# mark  (PostToolUse/Read): 必読文書の Read ごとに実際に読めた行区間を記録し,
+#        区間の和集合が全行をカバーした時点でその文書の「全文Read済み」を記録する。
 #        ハーネスは大きいファイルを切り詰める(PARTIAL view)ので, tool_input の limit/offset
 #        ではなく tool_response の実カバー範囲を優先して数える。
 # guard (PreToolUse/Edit|Write|NotebookEdit): 本文(chapters/*.tex)・言い回し標本・指示書・
-#        リズム原則・要件定義書への書き込みを, 有効なマーカーがない限り deny する。
-#        リズム原則が更新されるとマーカーと区間記録は無効になり, 読み直しが要る。
+#        リズム原則・要件定義書への書き込みを, 必読文書の全部に有効な記録がない限り deny する。
+#        文書が更新されると記録は無効になり, 読み直しが要る。
+# 必読文書: docs/リズム原則.md, docs/要件定義書.md, docs/判定原則.md, docs/概念導入順序整理.md,
+#        memory の feedback_*.md 群(Ryosuke の線が書かれている)。
 # 経緯: 2026-08-29, Ryosuke「仕組みとして強制的にそうしなければならないように縛っておいてください」。
 #        判定役がv11を先頭300行のReadで済ませて60件を起草し, ペア群に記録済みの失敗を再演した件から。
 #        導入直後, limitなしReadでもハーネスが450行で切り詰めてマーカーが付く偽陽性が見つかり,
 #        区間の累積カバー方式に改めた。
+#        2026-09-06, Ryosuke「hookで必ずリズム原則を徹底して読むことを指示し, 周辺まで含めて読むように
+#        してください。もう本当に話になりません」。トラック4で判定役の見出し案が四度差し戻され,
+#        リズム原則を読んだ後でも基準が起草に効いていなかった件から, 必読を周辺文書と memory まで広げた。
+import glob
 import json
 import os
 import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-PRINCIPLE = os.path.join(ROOT, "docs", "リズム原則.md")
 STATE_DIR = os.path.join(ROOT, ".claude", "state")
 DEFAULT_READ_LIMIT = 2000  # Read の既定行数
 
+# プロジェクト内の必読文書 (key, path)
+PROJECT_DOCS = [
+    ("リズム原則", os.path.join(ROOT, "docs", "リズム原則.md")),
+    ("要件定義書", os.path.join(ROOT, "docs", "要件定義書.md")),
+    ("判定原則", os.path.join(ROOT, "docs", "判定原則.md")),
+    ("概念導入順序整理", os.path.join(ROOT, "docs", "概念導入順序整理.md")),
+]
 
-def principle_stamp():
-    st = os.stat(PRINCIPLE)
+
+def memory_dir():
+    """Claude Code の auto-memory ディレクトリを探す。見つからなければ None。"""
+    env = os.environ.get("CLAUDE_MEMORY_DIR")
+    if env and os.path.isdir(env):
+        return env
+    home = os.path.expanduser("~")
+    base = os.path.join(home, ".claude", "projects")
+    # プロジェクトパスをエンコードした名前(例: c--Users-...-textbook-statistics)を含むものを探す
+    # エンコード名は '_' が '-' になる(textbook_statistics → textbook-statistics)
+    tail = os.path.basename(ROOT).lower().replace("_", "-")
+    cands = sorted(glob.glob(os.path.join(base, "*", "memory")))
+    for c in cands:
+        if tail in os.path.basename(os.path.dirname(c)).lower().replace("_", "-"):
+            return c
+    return None
+
+
+def memory_docs():
+    d = memory_dir()
+    if not d:
+        return []
+    out = []
+    for p in sorted(glob.glob(os.path.join(d, "feedback_*.md"))):
+        out.append((os.path.basename(p), p))
+    return out
+
+
+def required_docs():
+    return PROJECT_DOCS + memory_docs()
+
+
+def stamp_of(path):
+    st = os.stat(path)
     return f"{st.st_mtime_ns}:{st.st_size}"
 
 
-def principle_lines():
-    with open(PRINCIPLE, "rb") as f:
+def lines_of(path):
+    with open(path, "rb") as f:
         return sum(1 for _ in f)
 
 
@@ -35,12 +79,22 @@ def sid_of(data):
     return re.sub(r"[^A-Za-z0-9_-]", "_", data.get("session_id", "") or "unknown")
 
 
-def marker_path(sid):
-    return os.path.join(STATE_DIR, f"rhythm_read_{sid}")
+def state_path(sid):
+    return os.path.join(STATE_DIR, f"rhythm_state_{sid}.json")
 
 
-def cover_path(sid):
-    return os.path.join(STATE_DIR, f"rhythm_cover_{sid}.json")
+def load_state(sid):
+    try:
+        with open(state_path(sid), encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def save_state(sid, st):
+    os.makedirs(STATE_DIR, exist_ok=True)
+    with open(state_path(sid), "w", encoding="utf-8") as f:
+        json.dump(st, f, ensure_ascii=False)
 
 
 def deny(reason):
@@ -64,13 +118,24 @@ def merged(intervals):
     return out
 
 
+def match_doc(fp):
+    """Read された file_path が必読文書のどれかを返す。"""
+    fp_n = fp.replace("\\", "/").lower()
+    for key, path in required_docs():
+        p_n = path.replace("\\", "/").lower()
+        if fp_n == p_n or fp_n.endswith("/" + os.path.basename(p_n)):
+            return key, path
+    return None, None
+
+
 def mark(data):
     ti = data.get("tool_input") or {}
-    fp = str(ti.get("file_path", "")).replace("\\", "/")
-    if "リズム原則" not in fp:
+    fp = str(ti.get("file_path", ""))
+    key, path = match_doc(fp)
+    if not key:
         return
-    stamp = principle_stamp()
-    total = principle_lines()
+    stamp = stamp_of(path)
+    total = lines_of(path)
 
     # 実カバー範囲: ハーネスの切り詰め表示があればそれを優先する。
     resp = json.dumps(data.get("tool_response", ""), ensure_ascii=False)
@@ -82,25 +147,47 @@ def mark(data):
         limit = int(ti.get("limit") or DEFAULT_READ_LIMIT)
         end = min(start + limit - 1, total)
 
-    os.makedirs(STATE_DIR, exist_ok=True)
-    cov = {"stamp": stamp, "intervals": []}
-    try:
-        with open(cover_path(sid_of(data)), encoding="utf-8") as f:
-            old = json.load(f)
-        if old.get("stamp") == stamp:  # 原則が変わっていたら区間は捨てる
-            cov = old
-    except OSError:
-        pass
-    except Exception:
-        pass
-    cov["intervals"] = merged([list(map(int, iv)) for iv in cov["intervals"]] + [[start, end]])
-    with open(cover_path(sid_of(data)), "w", encoding="utf-8") as f:
-        json.dump(cov, f)
+    sid = sid_of(data)
+    st = load_state(sid)
+    rec = st.get(key) or {}
+    if rec.get("stamp") != stamp:  # 文書が変わっていたら区間は捨てる
+        rec = {"stamp": stamp, "intervals": [], "done": False}
+    rec["intervals"] = merged([list(map(int, iv)) for iv in rec["intervals"]] + [[start, end]])
+    ivs = rec["intervals"]
+    rec["done"] = bool(len(ivs) == 1 and ivs[0][0] <= 1 and ivs[0][1] >= total)
+    st[key] = rec
+    save_state(sid, st)
 
-    ivs = cov["intervals"]
-    if len(ivs) == 1 and ivs[0][0] <= 1 and ivs[0][1] >= total:
-        with open(marker_path(sid_of(data)), "w", encoding="utf-8") as f:
-            f.write(stamp)
+
+def unread(sid):
+    """未読または更新後未読の必読文書を [(key, 状況)] で返す。"""
+    st = load_state(sid)
+    out = []
+    for key, path in required_docs():
+        if not os.path.exists(path):
+            continue
+        rec = st.get(key)
+        if not rec:
+            out.append((key, "未読"))
+            continue
+        if rec.get("stamp") != stamp_of(path):
+            out.append((key, "Read後に更新あり"))
+            continue
+        if not rec.get("done"):
+            cov = ", ".join(f"{s}-{e}" for s, e in rec.get("intervals", []))
+            out.append((key, f"途中まで({cov} / 全{lines_of(path)}行)"))
+    return out
+
+
+def all_read(sid):
+    return not unread(sid)
+
+
+REQUIRE_MSG = (
+    "起草/編集の前に必読文書を全文読むこと: docs/リズム原則.md(ペア群と変更履歴まで最終行に届くまで), "
+    "docs/要件定義書.md, docs/判定原則.md, docs/概念導入順序整理.md, および memory の feedback_*.md 群。"
+    "表示が途中で切られたら offset を付けて続きを読む。全部に届けばこの編集は通る。"
+)
 
 
 def guard(data):
@@ -112,22 +199,10 @@ def guard(data):
     )
     if not is_target:
         return
-    try:
-        with open(marker_path(sid_of(data)), encoding="utf-8") as f:
-            recorded = f.read().strip()
-    except OSError:
-        deny(
-            "【rhythm_guard】このセッションでは docs/リズム原則.md を全文Readしていない. "
-            "本文・標本文書・指示書の起草/編集の前に, リズム原則を全文(ペア群と変更履歴まで, "
-            "最終行に届くまで)読むこと. 表示が途中で切られたら offset を付けて続きを読む. "
-            "全行に届けばこの編集は通る."
-        )
-        return
-    if recorded != principle_stamp():
-        deny(
-            "【rhythm_guard】docs/リズム原則.md が全文Read後に更新されている. "
-            "最新版を全文読み直してから編集すること."
-        )
+    miss = unread(sid_of(data))
+    if miss:
+        detail = "; ".join(f"{k}: {s}" for k, s in miss)
+        deny(f"【rhythm_guard】必読文書に未読がある → {detail}. " + REQUIRE_MSG)
 
 
 WRITE_TOKENS = (
@@ -140,7 +215,7 @@ TARGET_NAMES = ("言い回し標本", "指示書", "リズム原則", "要件定
 
 def guard_bash(data):
     # Bash/PowerShell 経由の書き込みで guard を迂回する穴を塞ぐ。
-    # コマンド文字列に対象ファイル名と書き込みらしきトークンが両方あれば, マーカーを要求する。
+    # コマンド文字列に対象ファイル名と書き込みらしきトークンが両方あれば, 全文Readを要求する。
     # 文字列ヒューリスティックなので完全ではない(一時ファイル経由の迂回等は検出できない)。
     # 主目的は「読まずに起草」の事故防止であって, 意図的な迂回への完全防御ではない。
     ti = data.get("tool_input") or {}
@@ -149,18 +224,53 @@ def guard_bash(data):
         return
     if not any(t in cmd for t in WRITE_TOKENS):
         return
-    try:
-        with open(marker_path(sid_of(data)), encoding="utf-8") as f:
-            if f.read().strip() == principle_stamp():
-                return
-    except OSError:
-        pass
-    deny(
-        "【rhythm_guard】シェル経由で本文・標本文書・指示書に書き込もうとしている可能性があるが, "
-        "このセッションでは docs/リズム原則.md の全文Readが済んでいない(または原則が更新された). "
-        "先にリズム原則を全文読むこと. 読み取り専用のコマンドが誤検知された場合は, "
-        "リダイレクトや書き込み系トークンを含まない形に直せば通る."
-    )
+    miss = unread(sid_of(data))
+    if miss:
+        detail = "; ".join(f"{k}: {s}" for k, s in miss)
+        deny(
+            "【rhythm_guard】シェル経由で本文・標本文書・指示書に書き込もうとしている可能性があるが, "
+            f"必読文書に未読がある → {detail}. " + REQUIRE_MSG +
+            " 読み取り専用のコマンドが誤検知された場合は, リダイレクトや書き込み系トークンを含まない形に直せば通る."
+        )
+
+
+def short_name(path):
+    if path.startswith(ROOT):
+        return os.path.relpath(path, ROOT).replace("\\", "/")
+    return "memory/" + os.path.basename(path)
+
+
+APPLY_MSG = (
+    "【hook】読むだけでなく当てること。起草の前に: (1) 読者が見る場所(目次/段落/章)を決め, "
+    "(2) その場所の裁定済みの現物を読み, (3) 対象を一語で確定してから書き, (4) 案をその場所に置いて読む。"
+    "差し戻しを受けたら局所を直さず束全体を起草し直し, 直前の指摘ではなくリズム原則 §4 と memory の feedback 群を読み直す。"
+    "見出しを起草するときは全章の見出し一覧(目次)を先に読む。"
+)
+
+
+def status(data):
+    """SessionStart 用: 必読文書の一覧と現在の既読状況を全件出力する。"""
+    sid = sid_of(data)
+    miss = dict(unread(sid))
+    print("【hook】本文の修正案・差し替え文・見出しを起草する前に, 次の必読文書を全文読むこと(切り詰められたら offset で続きを読み, 最終行に届くまで)。未読があるあいだ, 本文・標本文書・指示書への書き込みは拒否される。")
+    for key, path in required_docs():
+        if not os.path.exists(path):
+            continue
+        print(f"  - {short_name(path)} ({lines_of(path)}行) : {miss.get(key, '既読')}")
+    print(APPLY_MSG)
+
+
+def remind(data):
+    """UserPromptSubmit 用: 未読分だけを短く出す。"""
+    sid = sid_of(data)
+    miss = unread(sid)
+    docs = dict(required_docs())
+    if miss:
+        names = ", ".join(f"{short_name(docs[k])}({s})" for k, s in miss)
+        print(f"【hook】必読文書に未読 {len(miss)} 件: {names}。起草/編集の前に全文読むこと。")
+    else:
+        print("【hook】必読文書は全件既読。")
+    print(APPLY_MSG)
 
 
 def main():
@@ -171,13 +281,18 @@ def main():
         if mode == "guard":
             # 入力が読めないときは fail-close(拒否)に倒す。強制が目的のため。
             deny("【rhythm_guard】hook入力を解釈できなかったため, 安全側で拒否した.")
-        return
+            return
+        data = {}
     if mode == "mark":
         mark(data)
     elif mode == "guard":
         guard(data)
     elif mode == "guard_bash":
         guard_bash(data)
+    elif mode == "status":
+        status(data)
+    elif mode == "remind":
+        remind(data)
 
 
 main()
