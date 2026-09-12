@@ -6,8 +6,10 @@
 # guard (PreToolUse/Edit|Write|NotebookEdit): 本文(chapters/*.tex)・言い回し標本・指示書・
 #        リズム原則・要件定義書への書き込みを, 必読文書の全部に有効な記録がない限り deny する。
 #        文書が更新されると記録は無効になり, 読み直しが要る。
-# 必読文書: docs/リズム原則.md, docs/要件定義書.md, docs/判定原則.md, docs/概念導入順序整理.md,
-#        memory の feedback_*.md 群(Ryosuke の線が書かれている)。
+# 必読文書: docs/リズム原則.md (v15 で絶対則・判定原則・翻訳調の族・memory の feedback 群を一つに畳んだ),
+#        docs/要件定義書.md, docs/概念導入順序整理.md。
+#        2026-09-12, Ryosuke「すべて一つの書類にまとめてください」。memory の feedback_*.md は必読から外し,
+#        内容はリズム原則「繰り返し破られた線」が持つ。
 # 経緯: 2026-08-29, Ryosuke「仕組みとして強制的にそうしなければならないように縛っておいてください」。
 #        判定役がv11を先頭300行のReadで済ませて60件を起草し, ペア群に記録済みの失敗を再演した件から。
 #        導入直後, limitなしReadでもハーネスが450行で切り詰めてマーカーが付く偽陽性が見つかり,
@@ -29,7 +31,6 @@ DEFAULT_READ_LIMIT = 2000  # Read の既定行数
 PROJECT_DOCS = [
     ("リズム原則", os.path.join(ROOT, "docs", "リズム原則.md")),
     ("要件定義書", os.path.join(ROOT, "docs", "要件定義書.md")),
-    ("判定原則", os.path.join(ROOT, "docs", "判定原則.md")),
     ("概念導入順序整理", os.path.join(ROOT, "docs", "概念導入順序整理.md")),
 ]
 
@@ -62,7 +63,8 @@ def memory_docs():
 
 
 def required_docs():
-    return PROJECT_DOCS + memory_docs()
+    # v15 以降, memory の feedback 群はリズム原則に畳まれたので必読に含めない。
+    return PROJECT_DOCS
 
 
 def stamp_of(path):
@@ -184,8 +186,8 @@ def all_read(sid):
 
 
 REQUIRE_MSG = (
-    "起草/編集の前に必読文書を全文読むこと: docs/リズム原則.md(ペア群と変更履歴まで最終行に届くまで), "
-    "docs/要件定義書.md, docs/判定原則.md, docs/概念導入順序整理.md, および memory の feedback_*.md 群。"
+    "起草/編集の前に必読文書を全文読むこと: docs/リズム原則.md(§0 と「繰り返し破られた線」からペア群と変更履歴まで最終行に届くまで), "
+    "docs/要件定義書.md, docs/概念導入順序整理.md。"
     "表示が途中で切られたら offset を付けて続きを読む。全部に届けばこの編集は通る。"
 )
 
@@ -241,17 +243,40 @@ def short_name(path):
 
 
 APPLY_MSG = (
+    "【hook・判定の形】修正案を判定するときは, 修正前と修正案を段落の中に置いて自分で二度読み, 最初の一文を"
+    "「読者として残すのはどちらか」と「その段落で読者に何が起きるか」で書く。その一文に規則名・条番号・族名・"
+    "「意味が変わる」「統計的主張」を書いてはならない。規則は基準の記録であって, 規則に照らした結果は判定ではない。"
+    "自分の読みで出し, 外れたら外れたと言う。規則の後ろに隠れた判定は, 正しく見えても出さない。"
+    "(Ryosuke 2026-09-13「考えなく, このルールを守っていればよいと浅はかに認識しているのではないですか」) "
     "【hook】読むだけでなく当てること。起草の前に: (1) 読者が見る場所(目次/段落/章)を決め, "
     "(2) その場所の裁定済みの現物を読み, (3) 対象を一語で確定してから書き, (4) 案をその場所に置いて読む。"
-    "差し戻しを受けたら局所を直さず束全体を起草し直し, 直前の指摘ではなくリズム原則 §4 と memory の feedback 群を読み直す。"
+    "差し戻しを受けたら局所を直さず束全体を起草し直し, 直前の指摘ではなくリズム原則 §0・「繰り返し破られた線」・§4 を読み直す。"
     "見出しを起草するときは全章の見出し一覧(目次)を先に読む。"
 )
+
+
+def scope_msg():
+    """docs/リズム原則.md §0.1「絶対則」を一行に畳んで返す。Claude Code, Codex (AGENTS.md), Gemini (GEMINI.md) で同じ文書を使う。"""
+    p = os.path.join(ROOT, "docs", "リズム原則.md")
+    try:
+        with open(p, encoding="utf-8") as f:
+            text = f.read()
+        i = text.index("### 0.1 絶対則")
+        j = text.index("### 0.2", i)
+        body = [ln.strip() for ln in text[i:j].splitlines()[1:] if ln.strip()]
+        return "【hook・絶対則】" + " ".join(body) + " 判定は二読で行う: 一読目は全体（読者として通して読み, 採否を決める。規則は見ない）, 二読目は局所（「繰り返し破られた線」で残った語を名づけ, その語だけ直す）。二読目で一読目の採否を覆さない。"
+    except Exception:
+        return "【hook・絶対則】docs/リズム原則.md §0 を読んで従うこと(hook が読めなかった)。"
+
+
+SCOPE_MSG = scope_msg()
 
 
 def status(data):
     """SessionStart 用: 必読文書の一覧と現在の既読状況を全件出力する。"""
     sid = sid_of(data)
     miss = dict(unread(sid))
+    print(SCOPE_MSG)
     print("【hook】本文の修正案・差し替え文・見出しを起草する前に, 次の必読文書を全文読むこと(切り詰められたら offset で続きを読み, 最終行に届くまで)。未読があるあいだ, 本文・標本文書・指示書への書き込みは拒否される。")
     for key, path in required_docs():
         if not os.path.exists(path):
@@ -265,6 +290,7 @@ def remind(data):
     sid = sid_of(data)
     miss = unread(sid)
     docs = dict(required_docs())
+    print(SCOPE_MSG)
     if miss:
         names = ", ".join(f"{short_name(docs[k])}({s})" for k, s in miss)
         print(f"【hook】必読文書に未読 {len(miss)} 件: {names}。起草/編集の前に全文読むこと。")

@@ -1,7 +1,7 @@
 """本文で使うランニング例の統計量を一元計算する.
 
 入力は ``data/running_example.csv`` のみとし, 本文へ転記する前の丸めて
-いない値をJSONで出力する. ``--check`` を付けると, ``docs/修正方針.md``
+いない値をJSONで出力する. ``--check`` を付けると, ``archive/docs/修正方針.md``
 で確定した基準値に所定の桁で一致するかを検証する.
 
 実行例:
@@ -530,7 +530,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--check",
         action="store_true",
-        help="docs/修正方針.mdの確定基準値と照合する",
+        help="archive/docs/修正方針.mdの確定基準値と照合する",
     )
     return parser.parse_args()
 
