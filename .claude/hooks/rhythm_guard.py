@@ -272,10 +272,28 @@ def scope_msg():
 SCOPE_MSG = scope_msg()
 
 
+def design_msg():
+    """docs/要件定義書.md「## 0. 設計の観点」を一行に畳んで返す。すべての依頼より上位に置く (Ryosuke 2026-09-21)。"""
+    p = os.path.join(ROOT, "docs", "要件定義書.md")
+    try:
+        with open(p, encoding="utf-8") as f:
+            text = f.read()
+        i = text.index("## 0. 設計の観点")
+        j = text.index("\n---", i)
+        body = [ln.strip() for ln in text[i:j].splitlines()[1:] if ln.strip()]
+        return "【hook・設計の観点 (すべての依頼より上位)】" + " ".join(body)
+    except Exception:
+        return "【hook・設計の観点】docs/要件定義書.md §0 を読んで従うこと(hook が読めなかった)。"
+
+
+DESIGN_MSG = design_msg()
+
+
 def status(data):
     """SessionStart 用: 必読文書の一覧と現在の既読状況を全件出力する。"""
     sid = sid_of(data)
     miss = dict(unread(sid))
+    print(DESIGN_MSG)
     print(SCOPE_MSG)
     print("【hook】本文の修正案・差し替え文・見出しを起草する前に, 次の必読文書を全文読むこと(切り詰められたら offset で続きを読み, 最終行に届くまで)。未読があるあいだ, 本文・標本文書・指示書への書き込みは拒否される。")
     for key, path in required_docs():
@@ -290,6 +308,7 @@ def remind(data):
     sid = sid_of(data)
     miss = unread(sid)
     docs = dict(required_docs())
+    print(DESIGN_MSG)
     print(SCOPE_MSG)
     if miss:
         names = ", ".join(f"{short_name(docs[k])}({s})" for k, s in miss)
