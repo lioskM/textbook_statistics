@@ -1,0 +1,56 @@
+% \documentclass{article}
+\documentclass[platex,a4j,11pt,dvipdfmx]{jsarticle}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% \usepackage[OTF]{fontenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage[explicit]{titlesec}
+\usepackage{needspace}
+\usepackage{etoolbox}
+\usepackage{tocbibind}
+\usepackage{tcolorbox}
+
+\definecolor{stepheadingbackground}{RGB}{232,240,245}
+\titleformat{\subsection}[block]
+  {\normalfont\large\bfseries}
+  {}
+  {0pt}
+  {\colorbox{stepheadingbackground}{%
+    \parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+      \raggedright\strut\thesubsection\quad #1\strut}}}
+\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\pretocmd{\subsection}{\Needspace{6\baselineskip}}{}{}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{pre}
+%\usepackage{hyperref}
+
+
+
+\title{Part II : 統計学}
+\title{Part II : 統計学 (第二稿)}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+% 第1章 (概観). 本文の五段 (第2〜6章) とは別
+\input{v2_ch01_intro.tex}
+
+\newpage
+
+% 第2章 = 第1段「何についての数字かが, 言えることを決める」
+\input{v2_ch02_what_the_number_is_about.tex}
+
+% 第3〜6章 (第2〜5段) は未起草
+
+\end{document}
