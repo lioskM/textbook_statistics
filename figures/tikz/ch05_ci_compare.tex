@@ -1,0 +1,25 @@
+% 第5章 図5-1: 各組15人と各組75人のときの, 平均点の差の95%信頼区間
+% 数値は本文どおり: 15人 4 ± 2×4.4 = -4.8〜12.8, 75人 4 ± 2×1.96 = 0.08〜7.92
+\begin{tikzpicture}[x=0.42cm, y=1cm, font=\footnotesize]
+  % 軸
+  \draw[-stealth] (-7,0) -- (16,0) node[right] {点};
+  \foreach \t in {-5,0,5,10,15} {
+    \draw (\t,0) -- (\t,-0.08) node[below] {$\t$};
+  }
+  % 差がゼロの線
+  \draw[densely dashed] (0,0) -- (0,2.3);
+  % 各組15人
+  \draw[line width=2.2pt, black!55] (-4.8,1.6) -- (12.8,1.6);
+  \draw[thick] (-4.8,1.45) -- (-4.8,1.75) (12.8,1.45) -- (12.8,1.75);
+  \fill (4,1.6) circle (2.4pt);
+  \node[above] at (-4.8,1.75) {$-4.8$};
+  \node[above] at (12.8,1.75) {$12.8$};
+  \node[left, align=right] at (-7.2,1.6) {各組15人};
+  % 各組75人
+  \draw[line width=2.2pt, black!55] (0.08,0.8) -- (7.92,0.8);
+  \draw[thick] (0.08,0.65) -- (0.08,0.95) (7.92,0.65) -- (7.92,0.95);
+  \fill (4,0.8) circle (2.4pt);
+  \node[above] at (0.9,0.95) {$0.1$};
+  \node[above] at (7.92,0.95) {$7.9$};
+  \node[left, align=right] at (-7.2,0.8) {各組75人};
+\end{tikzpicture}

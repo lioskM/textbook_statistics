@@ -1,0 +1,24 @@
+% 第7章 図7-2: 細工のないコイン20枚を100回ずつ投げたときの表の回数 (例示用のデータ)
+% 19枚は二項分布 (100回, 0.5) から 40〜60回の範囲で乱数生成 (seed 20260927), 13枚目を62回に固定
+% 両側の二項検定で有意水準5%を下回るのは 39回以下か61回以上 (60回で p=0.057, 61回で p=0.035, 62回で p=0.021)
+\begin{tikzpicture}[font=\footnotesize]
+  \begin{axis}[
+    width=0.8\linewidth, height=5.2cm,
+    xmin=0.2, xmax=20.8, ymin=30, ymax=70,
+    xtick={1,5,10,15,20}, ytick={30,40,50,60,70},
+    xlabel={コインの番号}, ylabel={表の回数},
+    axis x line*=bottom, axis y line*=left,
+    clip=true,
+  ]
+    % 有意になる範囲
+    \fill[black!12] (axis cs:0.2,60.5) rectangle (axis cs:20.8,70);
+    \fill[black!12] (axis cs:0.2,30) rectangle (axis cs:20.8,39.5);
+    \draw[densely dashed, black!60] (axis cs:0.2,50) -- (axis cs:20.8,50);
+    \addplot[only marks, mark=*, mark size=2.3pt, mark options={fill=white, draw=black}] coordinates {
+      (1,48) (2,43) (3,43) (4,48) (5,47) (6,52) (7,55) (8,50) (9,56) (10,42)
+      (11,43) (12,50) (14,53) (15,55) (16,42) (17,51) (18,48) (19,57) (20,45)};
+    \addplot[only marks, mark=*, mark size=2.8pt, mark options={fill=black, draw=black}] coordinates {(13,62)};
+    \node[font=\footnotesize, anchor=south] at (axis cs:10.5,63.5) {有意になる範囲 (61回以上)};
+    \node[font=\footnotesize, anchor=north] at (axis cs:10.5,36.5) {有意になる範囲 (39回以下)};
+  \end{axis}
+\end{tikzpicture}

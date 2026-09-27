@@ -1,0 +1,26 @@
+% 第6章 図6-2: 製作費が交絡になる場合 (左) と通り道になる場合 (右)
+% 箱と数字は同じで, 違うのは矢印の向きだけ
+\begin{tikzpicture}[
+    font=\small,
+    box/.style={draw, rounded corners=2pt, minimum width=2.1cm, minimum height=0.75cm, fill=black!5},
+    arr/.style={-stealth, thick, shorten >=1pt},
+  ]
+  % 左: 製作費が原作の有無と視聴回数の両方に先立つ
+  \node[box] (L-cost) at (0,1.6) {製作費};
+  \node[box] (L-src)  at (-1.9,0) {原作の有無};
+  \node[box] (L-view) at (1.9,0) {視聴回数};
+  \draw[arr] (L-cost) -- (L-src);
+  \draw[arr] (L-cost) -- (L-view);
+  \draw[arr] (L-src) -- (L-view);
+  \node[font=\footnotesize] at (0,-0.9) {交絡になる場合};
+  % 右: 原作から製作費を通って視聴回数へ
+  \begin{scope}[xshift=7.2cm]
+    \node[box] (R-cost) at (0,1.6) {製作費};
+    \node[box] (R-src)  at (-1.9,0) {原作の有無};
+    \node[box] (R-view) at (1.9,0) {視聴回数};
+    \draw[arr] (R-src) -- (R-cost);
+    \draw[arr] (R-cost) -- (R-view);
+    \draw[arr] (R-src) -- (R-view);
+    \node[font=\footnotesize] at (0,-0.9) {通り道になる場合};
+  \end{scope}
+\end{tikzpicture}

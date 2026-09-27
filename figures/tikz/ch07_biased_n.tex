@@ -1,0 +1,16 @@
+% 第7章 図7-1: 偏った集め方のまま人数を増やしたときの信頼区間 (模式図, 目盛りなし)
+% 区間の半分の長さは 1/sqrt(n) に比例させた: 100人 3.0, 1000人 0.95, 10万人 0.095
+\begin{tikzpicture}[x=0.75cm, y=1cm, font=\footnotesize]
+  % 知りたい値と, 偏った集まりの平均
+  \draw[densely dashed] (0,-0.3) -- (0,3.3);
+  \draw[densely dotted, thick] (6,-0.3) -- (6,3.3);
+  \node[above, align=center] at (0,3.3) {有権者全体の平均};
+  \node[above, align=center] at (6,3.3) {平日の昼に渋谷駅に\\いた人たちの平均};
+  % 区間
+  \foreach \y/\c/\h/\lab in {2.4/5.5/3.0/100人, 1.4/6.3/0.95/1000人, 0.4/5.97/0.095/10万人} {
+    \draw[line width=2.2pt, black!55] ({\c-\h},\y) -- ({\c+\h},\y);
+    \draw[thick] ({\c-\h},\y-0.14) -- ({\c-\h},\y+0.14) ({\c+\h},\y-0.14) -- ({\c+\h},\y+0.14);
+    \fill (\c,\y) circle (2.2pt);
+    \node[left] at (-0.6,\y) {\lab};
+  }
+\end{tikzpicture}

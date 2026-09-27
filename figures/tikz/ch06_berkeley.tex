@@ -1,0 +1,48 @@
+% 第6章 図6-1: バークレーの主要6学部の男女別の合格率 (上) と志願者数 (下)
+% 学部別の数値は Bickel ほか (1975) の主要6学部 (R の UCBAdmissions と照合, 2026-09-27)
+%   A: 男 825人 62.1%, 女 108人 82.4%   B: 男 560人 63.0%, 女  25人 68.0%
+%   C: 男 325人 36.9%, 女 593人 34.1%   D: 男 417人 33.1%, 女 375人 34.9%
+%   E: 男 191人 27.7%, 女 393人 23.9%   F: 男 373人  5.9%, 女 341人  7.0%
+% 「全志願者」は本文の数値 (全学部: 男 約44%, 女 約35%)
+\begin{tikzpicture}[font=\footnotesize]
+  \begin{axis}[
+    name=rate,
+    width=0.82\linewidth, height=4.6cm, scale only axis=false,
+    ybar, bar width=7pt,
+    ymin=0, ymax=100, ytick={0,20,40,60,80,100},
+    ylabel={合格率 (\%)},
+    xmin=-0.7, xmax=6.7,
+    xtick={0,1,2,3,4,5,6},
+    xticklabels={全志願者,学部A,学部B,学部C,学部D,学部E,学部F},
+    x tick label style={font=\footnotesize},
+    axis x line*=bottom, axis y line*=left,
+    legend style={draw=none, at={(0.98,0.98)}, anchor=north east, font=\footnotesize},
+    legend image code/.code={\draw[#1] (0cm,-0.1cm) rectangle (0.3cm,0.1cm);},
+    enlarge x limits=false,
+  ]
+    \addplot[draw=black, fill=black!15] coordinates {
+      (0,44) (1,62.1) (2,63.0) (3,36.9) (4,33.1) (5,27.7) (6,5.9)};
+    \addplot[draw=black, fill=black!65] coordinates {
+      (0,35) (1,82.4) (2,68.0) (3,34.1) (4,34.9) (5,23.9) (6,7.0)};
+    \legend{男子, 女子}
+    \draw[black!40] (axis cs:0.5,0) -- (axis cs:0.5,100);
+  \end{axis}
+  \begin{axis}[
+    at={(rate.south)}, anchor=north, yshift=-1.1cm,
+    width=0.82\linewidth, height=3.2cm, scale only axis=false,
+    ybar, bar width=7pt,
+    ymin=0, ymax=900, ytick={0,300,600,900},
+    ylabel={志願者数 (人)},
+    xmin=-0.7, xmax=6.7,
+    xtick={1,2,3,4,5,6},
+    xticklabels={学部A,学部B,学部C,学部D,学部E,学部F},
+    x tick label style={font=\footnotesize},
+    axis x line*=bottom, axis y line*=left,
+    enlarge x limits=false,
+  ]
+    \addplot[draw=black, fill=black!15] coordinates {
+      (1,825) (2,560) (3,325) (4,417) (5,191) (6,373)};
+    \addplot[draw=black, fill=black!65] coordinates {
+      (1,108) (2,25) (3,593) (4,375) (5,393) (6,341)};
+  \end{axis}
+\end{tikzpicture}
