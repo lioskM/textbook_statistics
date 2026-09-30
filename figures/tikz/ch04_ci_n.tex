@@ -1,0 +1,24 @@
+% 第4章: 同じ平均3.8, 標準偏差0.9のレビューで, 件数 n=5, 20, 100 のときの95%信頼区間
+% 数値は本文どおり: n=5 は 3.0〜4.6, n=20 は 3.4〜4.2, n=100 は 3.62〜3.98
+\begin{tikzpicture}[x=5.6cm, y=1cm, font=\footnotesize]
+  % 軸 (横軸は星の平均. 2.9〜4.7 を描く. 原点は 3.8)
+  \draw[-stealth] (-0.95,0) -- (0.95,0) node[right] {星};
+  \foreach \v/\l in {-0.8/3.0, -0.4/3.4, 0/3.8, 0.4/4.2, 0.8/4.6} {
+    \draw (\v,0) -- (\v,-0.08) node[below] {$\l$};
+  }
+  % n=5
+  \draw[line width=2.2pt, black!55] (-0.8,2.4) -- (0.8,2.4);
+  \draw[thick] (-0.8,2.25) -- (-0.8,2.55) (0.8,2.25) -- (0.8,2.55);
+  \fill (0,2.4) circle (2.4pt);
+  \node[left, align=right] at (-1.0,2.4) {$n=5$};
+  % n=20
+  \draw[line width=2.2pt, black!55] (-0.4,1.6) -- (0.4,1.6);
+  \draw[thick] (-0.4,1.45) -- (-0.4,1.75) (0.4,1.45) -- (0.4,1.75);
+  \fill (0,1.6) circle (2.4pt);
+  \node[left, align=right] at (-1.0,1.6) {$n=20$};
+  % n=100
+  \draw[line width=2.2pt, black!55] (-0.18,0.8) -- (0.18,0.8);
+  \draw[thick] (-0.18,0.65) -- (-0.18,0.95) (0.18,0.65) -- (0.18,0.95);
+  \fill (0,0.8) circle (2.4pt);
+  \node[left, align=right] at (-1.0,0.8) {$n=100$};
+\end{tikzpicture}

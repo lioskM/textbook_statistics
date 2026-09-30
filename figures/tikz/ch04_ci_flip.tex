@@ -1,0 +1,34 @@
+% 第4章: 左は標本平均の分布 (中心 mu, 標準偏差 SE) の真ん中95% (mu±2SE) を塗った図.
+%       右は同じ幅の区間を手元の標本平均 xbar を中心に置き直した図. mu はその中に入っている.
+% 横軸の単位は SE. xbar は例として mu+1.2SE の位置に置いた.
+\begin{tikzpicture}
+  \begin{axis}[
+    width=0.44\linewidth, height=3.4cm, scale only axis,
+    axis x line=bottom, axis y line=none,
+    xmin=-3.6, xmax=3.6, ymin=0, ymax=0.5,
+    xtick={-2,0,2}, xticklabels={$\mu-2\,\mathrm{SE}$,$\mu$,$\mu+2\,\mathrm{SE}$},
+    tick align=outside, x tick label style={font=\footnotesize},
+    title={標本平均の分布}, title style={font=\footnotesize, yshift=-2pt},
+    clip=false,
+  ]
+    \addplot[draw=none, fill=black!20, domain=-2:2, samples=100] {exp(-x^2/2)/sqrt(2*pi)} \closedcycle;
+    \addplot[black, very thick, domain=-3.6:3.6, samples=160] {exp(-x^2/2)/sqrt(2*pi)};
+    \node[font=\footnotesize] at (axis cs:0,0.16) {約95\%};
+    \fill (axis cs:1.2,0) circle (2pt);
+    \node[font=\footnotesize, below] at (axis cs:1.2,-0.02) {$\bar{x}$};
+  \end{axis}
+\end{tikzpicture}
+\hfill
+\begin{tikzpicture}[x=0.36\linewidth/7.2, y=1cm, font=\footnotesize]
+  % 右: 手元の xbar を中心に ±2SE の区間. 横軸の尺度は左と同じ (単位 SE).
+  \draw[-stealth] (-3.6,0) -- (3.9,0);
+  \draw (0,0) -- (0,-0.08) node[below] {$\mu$};
+  \draw[densely dashed] (0,0) -- (0,1.9);
+  \draw[line width=2.2pt, black!55] (-0.8,1.2) -- (3.2,1.2);
+  \draw[thick] (-0.8,1.05) -- (-0.8,1.35) (3.2,1.05) -- (3.2,1.35);
+  \fill (1.2,1.2) circle (2.4pt);
+  \node[above] at (1.2,1.35) {$\bar{x}$};
+  \node[below] at (-0.8,1.05) {$\bar{x}-2\,\mathrm{SE}$};
+  \node[below] at (3.2,1.05) {$\bar{x}+2\,\mathrm{SE}$};
+  \node[above] at (1.2,2.2) {手元の区間};
+\end{tikzpicture}

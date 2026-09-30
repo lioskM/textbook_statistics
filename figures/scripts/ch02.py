@@ -66,6 +66,10 @@ budget_oku = df['budget'] / 1e8
 
 fig, ax = plt.subplots(figsize=(6.0, 2.8))
 ax.hist(views_man, bins=12, color=BLUE, edgecolor='white', linewidth=0.5)
+# 本文が図の上の位置を語るので, 平均 (破線) と中央値 (点線) の位置を縦線で示す
+ax.axvline(views_man.mean(), color='black', linestyle='--', linewidth=1.0, label='平均')
+ax.axvline(views_man.median(), color='black', linestyle=':', linewidth=1.2, label='中央値')
+ax.legend(frameon=False)
 ax.set_xlabel('視聴回数 (万回)')
 ax.set_ylabel('作品数')
 fig.tight_layout()

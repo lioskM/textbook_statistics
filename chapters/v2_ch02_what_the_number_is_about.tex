@@ -262,12 +262,12 @@
     \begin{figure}[htbp]
       \centering
       \includegraphics[width=0.85\linewidth]{../figures/output/ch02_views.pdf}
-      \caption{映画80本の公開後30日間の視聴回数のヒストグラム. 横軸は視聴回数 (万回), 縦軸は作品の本数.}
+      \caption{映画80本の公開後30日間の視聴回数のヒストグラム. 横軸は視聴回数 (万回), 縦軸は作品の本数. 破線は平均の $209.4$ 万回, 点線は中央値の $107.1$ 万回の位置を示す.}
       \label{fig:ch02-views}
     \end{figure}
 
     図を見ると, 左側の低い視聴回数のところに大きな山があり, そこから右側へ向かって細く長く裾が伸びている.
-    平均の $209.4$ 万回という値は, この右に長く伸びた裾の大ヒット作に強く引っ張られて, 山の頂上よりもずいぶん右側にある.
+    図の破線で示した平均の $209.4$ 万回は, この右に長く伸びた裾の大ヒット作に強く引っ張られて, 山の頂上よりもずいぶん右側にある.
 
   \subsection{手元にある分しか数えていない}
 
@@ -289,32 +289,6 @@
 
     映画の80本についてもまったく同じことが言える.
     もし別の80本を集めてきて同じように計算していたとしたら, $209.4$ 万回という平均は一体いくつになっていただろうか.
-
-% 以下3つの図はコラム本体で参照するが, tcolorbox の中には float を置けないため, mybox の直前で宣言している.
-
-% 図のデータ: 仮. 要作成
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\linewidth]{../figures/output/ch02_col_width.pdf}
-  \caption{あるデータを二通りの階級の幅で描いたヒストグラム. 左は幅を細かく, 右は幅を粗く取っている.}
-  \label{fig:ch02-col-width}
-\end{figure}
-
-% 図のデータ: 仮. 要作成
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\linewidth]{../figures/output/ch02_col_box.pdf}
-  \caption{山が一つのデータと山が二つのデータを, ヒストグラム（上）と箱ひげ図（下）で描いたもの.}
-  \label{fig:ch02-col-box}
-\end{figure}
-
-% 図のデータ: 仮. 要作成
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\linewidth]{../figures/output/ch02_col_axis.pdf}
-  \caption{同じ点を打った散布図を, 軸の縦横比だけ変えて並べたもの. 横軸は製作費 (億円), 縦軸は視聴回数 (万回).}
-  \label{fig:ch02-col-axis}
-\end{figure}
 
 \begin{mybox}{数字を変えずに図を変える}
 
@@ -410,6 +384,32 @@
     何を知るために計算するのかをあらかじめ決めてはじめて, その数で何が言えるのかが決まる.
     決めるのは, データではなく, 自分が何を知りたいかのほうだ.
 \end{mybox}
+
+% 以下3つの図はコラム本体で参照するが, tcolorbox の中には float を置けないため, mybox の直後で宣言している.
+
+% 図のデータ: 仮. 要作成
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{../figures/output/ch02_col_width.pdf}
+  \caption{あるデータを二通りの階級の幅で描いたヒストグラム. 左は幅を細かく, 右は幅を粗く取っている.}
+  \label{fig:ch02-col-width}
+\end{figure}
+
+% 図のデータ: 仮. 要作成
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{../figures/output/ch02_col_box.pdf}
+  \caption{山が一つのデータと山が二つのデータを, ヒストグラム（上）と箱ひげ図（下）で描いたもの.}
+  \label{fig:ch02-col-box}
+\end{figure}
+
+% 図のデータ: 仮. 要作成
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{../figures/output/ch02_col_axis.pdf}
+  \caption{同じ点を打った散布図を, 軸の縦横比だけ変えて並べたもの. 横軸は製作費 (億円), 縦軸は視聴回数 (万回).}
+  \label{fig:ch02-col-axis}
+\end{figure}
 
   \begin{mybox}{ここまででわかったこと}
     四段階の一つ目「調べたいことを決める」と, 二つ目「統計量で見る」.

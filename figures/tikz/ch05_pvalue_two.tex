@@ -1,0 +1,36 @@
+% 第5章: 差がないと仮定して取り直したときの検定統計量の分布を二枚並べ, 両裾を塗る
+% 左: 各組15人の t=0.9 (両裾およそ0.37), 右: 各組75人の t=2.0 (両裾およそ0.04)
+% 曲線は標準正規密度 exp(-x^2/2)/sqrt(2 pi). 数値は本文どおり.
+\begin{tikzpicture}
+  \begin{axis}[
+    width=0.44\linewidth, height=3.6cm, scale only axis,
+    axis x line=bottom, axis y line=none,
+    xmin=-4.2, xmax=4.2, ymin=0, ymax=0.47,
+    xtick={-0.9,0,0.9}, xticklabels={$-0.9$,$0$,$0.9$},
+    tick align=outside, x tick label style={font=\footnotesize},
+    title={各組15人：$t=0.9$}, title style={font=\footnotesize, yshift=-2pt},
+    clip=false,
+  ]
+    \addplot[draw=none, fill=black!45, domain=-4.2:-0.9, samples=80] {exp(-x^2/2)/sqrt(2*pi)} \closedcycle;
+    \addplot[draw=none, fill=black!45, domain=0.9:4.2, samples=80] {exp(-x^2/2)/sqrt(2*pi)} \closedcycle;
+    \addplot[black, very thick, domain=-4.2:4.2, samples=160] {exp(-x^2/2)/sqrt(2*pi)};
+    \node[font=\footnotesize] at (axis cs:0,0.44) {$p$値 $\approx 0.37$};
+  \end{axis}
+\end{tikzpicture}
+\hfill
+\begin{tikzpicture}
+  \begin{axis}[
+    width=0.44\linewidth, height=3.6cm, scale only axis,
+    axis x line=bottom, axis y line=none,
+    xmin=-4.2, xmax=4.2, ymin=0, ymax=0.47,
+    xtick={-2,0,2}, xticklabels={$-2.0$,$0$,$2.0$},
+    tick align=outside, x tick label style={font=\footnotesize},
+    title={各組75人：$t=2.0$}, title style={font=\footnotesize, yshift=-2pt},
+    clip=false,
+  ]
+    \addplot[draw=none, fill=black!45, domain=-4.2:-2, samples=80] {exp(-x^2/2)/sqrt(2*pi)} \closedcycle;
+    \addplot[draw=none, fill=black!45, domain=2:4.2, samples=80] {exp(-x^2/2)/sqrt(2*pi)} \closedcycle;
+    \addplot[black, very thick, domain=-4.2:4.2, samples=160] {exp(-x^2/2)/sqrt(2*pi)};
+    \node[font=\footnotesize] at (axis cs:0,0.44) {$p$値 $\approx 0.04$};
+  \end{axis}
+\end{tikzpicture}
