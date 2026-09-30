@@ -88,7 +88,7 @@ axes[0].set_title('幅を細かく取る')
 axes[1].hist(width_data, bins=np.arange(20, 100, 20), color=BLUE, edgecolor='white', linewidth=0.5)
 axes[1].set_title('幅を粗く取る')
 for ax in axes:
-    ax.set_xlabel('値')
+    ax.set_xlabel('点数')
     ax.set_ylabel('件数')
 fig.tight_layout()
 save(fig, 'ch02_col_width')
@@ -129,7 +129,7 @@ for j, (data, name) in enumerate([(unimodal, '山が一つ'), (bimodal, '山が�
     axes[1, j].boxplot(data, vert=False, whis=(0, 100), widths=0.5,
                        medianprops={'color': 'black'})
     axes[1, j].set_yticks([])
-    axes[1, j].set_xlabel('値')
+    axes[1, j].set_xlabel('点数')
 fig.tight_layout()
 save(fig, 'ch02_col_box')
 
