@@ -47,6 +47,18 @@
         ]
       }
     ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/reader_postcheck.py\"",
+            "timeout": 15,
+            "statusMessage": "面白さ・引きつけ・ユーモア・目的の事後確認が要るかを確認中"
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "hooks": [
