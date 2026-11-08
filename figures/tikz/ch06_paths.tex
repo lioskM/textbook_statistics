@@ -1,4 +1,4 @@
-% 第6章 図6-2: 製作費が交絡になる場合 (左) と通り道になる場合 (右)
+% 第6章 図6-2: 製作費が交絡になる場合 (左) と原作の結果として決まる場合 (右)
 % 箱と数字は同じで, 違うのは矢印の向きだけ
 \begin{tikzpicture}[
     font=\small,
@@ -13,7 +13,7 @@
   \draw[arr] (L-cost) -- (L-view);
   \draw[arr] (L-src) -- (L-view);
   \node[font=\footnotesize] at (0,-0.9) {交絡になる場合};
-  % 右: 原作から製作費を通って視聴回数へ
+  % 右: 原作が製作費を決め, 製作費が視聴回数を変える
   \begin{scope}[xshift=7.2cm]
     \node[box] (R-cost) at (0,1.6) {製作費};
     \node[box] (R-src)  at (-1.9,0) {原作の有無};
@@ -21,6 +21,6 @@
     \draw[arr] (R-src) -- (R-cost);
     \draw[arr] (R-cost) -- (R-view);
     \draw[arr] (R-src) -- (R-view);
-    \node[font=\footnotesize] at (0,-0.9) {通り道になる場合};
+    \node[font=\footnotesize] at (0,-0.9) {原作の結果として決まる場合};
   \end{scope}
 \end{tikzpicture}
